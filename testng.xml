@@ -4,8 +4,9 @@
     <parameter name="browserTest" value="chrome"/>
     <test name="BasicAssignment">
         <classes>
-            <class name="com.vmo.training.demo.test.assignment1.BursamalaysiaTest"/>
-            <class name="com.vmo.training.demo.test.assignment1.EcommerceTest"/>
+<!--            <class name="com.vmo.training.demo.test.assignment1.BursamalaysiaTest"/>-->
+<!--            <class name="com.vmo.training.demo.test.assignment1.EcommerceTest"/>-->
+            <class name="com.vmo.training.demo.test.assignment2a.FlowTest"/>
         </classes>
     </test>
 </suite>

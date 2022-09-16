@@ -1,6 +1,6 @@
 package com.vmo.training.demo.test.assignment1;
 
-import com.vmo.training.demo.basetests.BaseTest;
+import com.vmo.training.demo.basetests.assignment1.BaseTest;
 import com.vmo.training.demo.microservices.steps.assignment1.BursamalaysiaSteps;
 import com.vmo.training.demo.utils.keywords.WebUI;
 import jdk.jfr.Description;

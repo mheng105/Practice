@@ -1,6 +1,6 @@
 package com.vmo.training.demo.test.assignment1;
 
-import com.vmo.training.demo.basetests.BaseTest;
+import com.vmo.training.demo.basetests.assignment1.BaseTest;
 import com.vmo.training.demo.microservices.steps.assignment1.EcommerceSteps;
 import org.testng.annotations.Test;
 import com.vmo.training.demo.microservices.pages.assignment1.IProduct;
