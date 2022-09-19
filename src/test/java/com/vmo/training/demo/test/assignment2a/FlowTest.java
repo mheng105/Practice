@@ -10,6 +10,8 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.vmo.training.demo.microservices.constants.Constant.URL_PROJECT;
+
 
 public class FlowTest extends ProjectBaseTest {
     steps2a steps=new steps2a();
@@ -18,7 +20,7 @@ public class FlowTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project Test1");
 
-        response=steps.createNewProject(map,getAccessToken(),path);
+        response=steps.createNewProject(map,getAccessToken(),URL_PROJECT);
         steps.createProjectSuccessfully(200,response,(String)map.get("name"));
         id=getCreatedId(response);
 
@@ -35,7 +37,7 @@ public class FlowTest extends ProjectBaseTest {
 
     @Test(priority = 1)
     public void getProject(){
-        response=steps.getProject(getAccessToken(),path);
+        response=steps.getProject(getAccessToken(),URL_PROJECT);
         steps.verifyStatus(200,response);
     }
 
@@ -44,20 +46,20 @@ public class FlowTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project Update1");
 
-        response=steps.updateProject(map,getAccessToken(),path+"/"+id);
+        response=steps.updateProject(map,getAccessToken(),URL_PROJECT+"/"+id);
         steps.verifyStatus(204,response);
     }
 
     @Test(priority = 3)
     public void getAllProject(){
-        response=steps.getProject(getAccessToken(),path);
+        response=steps.getProject(getAccessToken(),URL_PROJECT);
         steps.verifyStatus(200,response);
         id=String.valueOf(getId(response));
     }
 
     @Test(priority = 4)
     public void deleteProject(){
-        response=steps.deleteProject(getAccessToken(),path+"/"+id);
+        response=steps.deleteProject(getAccessToken(),URL_PROJECT+"/"+id);
         steps.verifyStatus(204,response);
     }
 }

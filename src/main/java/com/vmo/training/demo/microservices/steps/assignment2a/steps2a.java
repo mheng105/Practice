@@ -26,14 +26,14 @@ public class steps2a {
         return sendPostMethodWithoutToken(map,path);
     }
 
-    public Response createNewProjectWithDeleteMethod(Map<String,Object>map,String accessToken,String path){
-        Response response=given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + accessToken)
-                .when()
-                .body(map)
-                .delete(path);
-        return response;
+    public Response createNewProjectWithInvalidMethod(Map<String,Object>map,String accessToken,String path){
+//        Response response=given()
+//                .contentType(ContentType.JSON)
+//                .header("Authorization", "Bearer " + accessToken)
+//                .when()
+//                .body(map)
+//                .delete(path);
+        return sendDeleteMethod(accessToken,path);
     }
 
     @Step("A project is created successfully")
@@ -70,11 +70,8 @@ public class steps2a {
         return sendGetMethodWithoutToken(path);
     }
 
-    public Response getProjectWithInvalidMethod(String accessToken,String path){
-        Response response=given().header("Authorization","Bearer "+accessToken)
-                .when()
-                .patch(path);
-        return response;
+    public Response getProjectWithInvalidMethod(Map map,String accessToken,String path){
+        return sendPatchMethod(map,accessToken,path);
     }
 
     @Step("Verify status code")
@@ -96,12 +93,7 @@ public class steps2a {
 
     @Step("Update project with invalid method")
     public Response updateProjectWithInvalidMethod(Map map,String accessToken,String path){
-        Response response=given().header("Authorization","Bearer "+accessToken)
-                .contentType(ContentType.JSON)
-                .when()
-                .body(map)
-                .put(path);
-        return response;
+        return sendPutMethod(map,accessToken,path);
     }
 
     @Step("Delete a project")
@@ -115,10 +107,8 @@ public class steps2a {
     }
 
     @Step()
-    public Response deleteProjectWithInvalidMethod(String accessToken,String path){
-        Response response=given().header("Authorization","Bearer "+accessToken)
-                .when().put(path);
-        return response;
+    public Response deleteProjectWithInvalidMethod(Map map,String accessToken,String path){
+        return sendPutMethod(map,accessToken,path);
     }
 
     @Step("Show pretty")

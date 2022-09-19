@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.vmo.training.demo.handles.ResponseHandles.sendGetMethod;
+import static com.vmo.training.demo.microservices.constants.Constant.*;
+
 
 public class UpdateProjectTest extends ProjectBaseTest {
     steps2a updateProjectSteps=new steps2a();
@@ -20,7 +23,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
     @BeforeMethod(description = "Get all project then getting id")
     @Step("Get id in project list")
     public void getId() {
-        response = responseHandles.sendGetMethod(getAccessToken(), path);
+        response = sendGetMethod(getAccessToken(), URL_PROJECT);
         Assert.assertEquals(response.statusCode(), 200);
         List re = response.as(List.class);
         String object = new Gson().toJson(re.get(2));
@@ -35,7 +38,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        response=updateProjectSteps.updateProject(map,getAccessToken(),path+"/"+id);
+        response=updateProjectSteps.updateProject(map,getAccessToken(),URL_PROJECT+"/"+id);
         updateProjectSteps.verifyStatus(204,response);
     }
 
@@ -44,7 +47,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project");
 
-        response=updateProjectSteps.updateProject(map,invalid_accessToken,path+"/"+id);
+        response=updateProjectSteps.updateProject(map,invalid_accessToken,URL_PROJECT+"/"+id);
         updateProjectSteps.verifyStatus(401,response);
     }
 
@@ -53,7 +56,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project");
 
-        response=updateProjectSteps.updateProject(map,getAccessToken(),path+"/"+invalid_id);
+        response=updateProjectSteps.updateProject(map,getAccessToken(),URL_PROJECT+"/"+invalid_id);
         updateProjectSteps.verifyStatus(400,response);
     }
 
@@ -62,7 +65,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project");
 
-        response=updateProjectSteps.updateProject(map,getAccessToken(),path+"/");
+        response=updateProjectSteps.updateProject(map,getAccessToken(),URL_PROJECT+"/");
         updateProjectSteps.verifyStatus(200,response);
     }
 
@@ -71,7 +74,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project");
 
-        response=updateProjectSteps.updateProject(map,getAccessTokenFail(),path+"/"+id);
+        response=updateProjectSteps.updateProject(map,getAccessTokenFail(),URL_PROJECT+"/"+id);
         updateProjectSteps.verifyStatus(404,response);
     }
 
@@ -80,7 +83,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project");
 
-        response=updateProjectSteps.updateProject(map,getAccessToken(),path+"/a/abc/"+id);
+        response=updateProjectSteps.updateProject(map,getAccessToken(),URL_PROJECT+"/a/abc/"+id);
         updateProjectSteps.verifyStatus(404,response);
     }
 
@@ -89,7 +92,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name",123456);
 
-        response=updateProjectSteps.updateProject(map,getAccessToken(),path+"/"+id);
+        response=updateProjectSteps.updateProject(map,getAccessToken(),URL_PROJECT+"/"+id);
         updateProjectSteps.verifyStatus(400,response);
     }
 
@@ -98,7 +101,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,String> map=new HashMap<>();
         map.put("name","C5 Project");
 
-        response=updateProjectSteps.updateProjectWithoutAccessToken(map,path+"/"+id);
+        response=updateProjectSteps.updateProjectWithoutAccessToken(map,URL_PROJECT+"/"+id);
         updateProjectSteps.verifyStatus(401,response);
     }
 
@@ -106,8 +109,8 @@ public class UpdateProjectTest extends ProjectBaseTest {
     public void U_09(){
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project");
-        
-        response=updateProjectSteps.updateProjectWithInvalidMethod(map,getAccessToken(),path+"/"+id);
+
+        response=updateProjectSteps.updateProjectWithInvalidMethod(map,getAccessToken(),URL_PROJECT+"/"+id);
         updateProjectSteps.verifyStatus(405,response);
     }
 }

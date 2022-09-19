@@ -2,8 +2,6 @@ package com.vmo.training.demo.basetests.assignment2a;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.vmo.training.demo.handles.ResponseHandles;
-import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -13,13 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.vmo.training.demo.handles.ResponseHandles.sendPostMethodWithoutToken;
+
 
 public class ProjectBaseTest{
-    protected ResponseHandles responseHandles=new ResponseHandles();
-    protected final String invalid_accessToken="a1223a344b";
-    protected final String invalid_id="102002020a";
+
     protected static String id;
-    protected final String path="/rest/v1/projects";
     protected Response response;
 
     @BeforeMethod
@@ -32,7 +29,7 @@ public class ProjectBaseTest{
         map.put("email","mheng105@gmail.com");
         map.put("password","123456abc");
 
-        response=responseHandles.sendPostMethodWithoutToken(map,"/API/v8.7/user/login");
+        response=sendPostMethodWithoutToken(map,"/API/v8.7/user/login");
         Assert.assertEquals(response.statusCode(),200);
 
         Object o=response.as(Object.class);
@@ -60,7 +57,7 @@ public class ProjectBaseTest{
         map.put("email","mheng105@gmail.com");
         map.put("password","123456abc");
 
-        response=responseHandles.sendPostMethodWithoutToken(map,"/abc");
+        response= sendPostMethodWithoutToken(map,"/abc");
         Assert.assertEquals(response.statusCode(),"404");
 
         Object o=response.as(Object.class);

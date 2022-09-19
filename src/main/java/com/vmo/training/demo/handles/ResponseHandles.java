@@ -56,4 +56,20 @@ public class ResponseHandles {
         return response;
     }
 
+    public static Response sendPutMethod(Map map,String accessToken,String path){
+        Response response=given()
+                .header("Authorization","Bearer "+accessToken.replaceAll("\"",""))
+                .when()
+                .put(path);
+        return response;
+    }
+
+    public static Response sendPatchMethod(Map map,String accessToken,String path){
+        Response response=given()
+                .header("Authorization","Bearer "+accessToken.replaceAll("\"",""))
+                .when()
+                .patch(path);
+        return response;
+    }
+
 }
