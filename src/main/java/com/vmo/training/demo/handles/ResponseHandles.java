@@ -8,7 +8,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 public class ResponseHandles {
-    public Response sendPostMethodWithoutToken(Map map,String path){
+    public static Response sendPostMethodWithoutToken(Map map,String path){
         Response response=given()
                 .contentType(ContentType.JSON)
                 .when()
@@ -17,20 +17,20 @@ public class ResponseHandles {
         return response;
     }
 
-    public Response sendGetMethodWithoutToken(String path){
+    public static Response sendGetMethodWithoutToken(String path){
         Response response=given()
                 .when()
                 .get(path);
         return response;
     }
 
-    public Response sendDeleteMethodWithoutToken(String path){
+    public static Response sendDeleteMethodWithoutToken(String path){
         Response response=given()
                 .when()
                 .delete(path);
         return response;
     }
-    public Response sendPostMethod(Map map, String accessToken,String path){
+    public static Response sendPostMethod(Map map, String accessToken,String path){
         Response response=given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + accessToken.replaceAll("\"",""))
@@ -40,7 +40,7 @@ public class ResponseHandles {
         return response;
     }
 
-    public Response sendGetMethod(String accessToken, String path){
+    public static Response sendGetMethod(String accessToken, String path){
         Response response=given()
                 .header("Authorization","Bearer "+accessToken.replaceAll("\"",""))
                 .when()
@@ -48,7 +48,7 @@ public class ResponseHandles {
         return response;
     }
 
-    public Response sendDeleteMethod(String accessToken,String path){
+    public static Response sendDeleteMethod(String accessToken,String path){
         Response response=given()
                 .header("Authorization","Bearer "+accessToken.replaceAll("\"",""))
                 .when()

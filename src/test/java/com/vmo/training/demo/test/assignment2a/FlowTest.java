@@ -3,9 +3,8 @@ package com.vmo.training.demo.test.assignment2a;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.vmo.training.demo.basetests.assignment2a.ProjectBaseTest;
-import com.vmo.training.demo.microservices.steps.assignment2a.CreateProjectSteps;
+import com.vmo.training.demo.microservices.steps.assignment2a.steps2a;
 import io.restassured.response.Response;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -13,17 +12,14 @@ import java.util.Map;
 
 
 public class FlowTest extends ProjectBaseTest {
-    CreateProjectSteps project;
+    steps2a steps=new steps2a();
     @Test(priority = 0)
     public void createProject(){
-        Map<Object,String> map=new HashMap<>();
+        Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project Test1");
 
-        response=responseHandles.sendPostMethod(map,getAccessToken(),path);
-        Assert.assertEquals(response.statusCode(),200);
-        response.prettyPrint();
-
-//        response=(Response) project.sendRequestCreateProject(getAccessToken(),path).verifyStatusCode().printPretty();
+        response=steps.createNewProject(map,getAccessToken(),path);
+        steps.createProjectSuccessfully(200,response,(String)map.get("name"));
         id=getCreatedId(response);
 
     }
@@ -39,32 +35,29 @@ public class FlowTest extends ProjectBaseTest {
 
     @Test(priority = 1)
     public void getProject(){
-        response=responseHandles.sendGetMethod(getAccessToken(),path+"/"+id);
-        Assert.assertEquals(response.statusCode(),200);
-        response.prettyPrint();
+        response=steps.getProject(getAccessToken(),path);
+        steps.verifyStatus(200,response);
     }
 
     @Test(priority = 2)
     public void updateProject(){
-        Map<Object,String> map=new HashMap<>();
+        Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project Update1");
-        response=responseHandles.sendPostMethod(map,getAccessToken(),path+"/"+id);
-        Assert.assertEquals(response.statusCode(),204);
-        response.prettyPrint();
+
+        response=steps.updateProject(map,getAccessToken(),path+"/"+id);
+        steps.verifyStatus(204,response);
     }
 
     @Test(priority = 3)
     public void getAllProject(){
-        response=responseHandles.sendGetMethod(getAccessToken(),path);
-        Assert.assertEquals(response.statusCode(),200);
-        response.prettyPrint();
+        response=steps.getProject(getAccessToken(),path);
+        steps.verifyStatus(200,response);
         id=String.valueOf(getId(response));
     }
 
     @Test(priority = 4)
     public void deleteProject(){
-        response=responseHandles.sendDeleteMethod(getAccessToken(),path+"/"+id);
-        Assert.assertEquals(response.statusCode(),204);
-        response.prettyPrint();
+        response=steps.deleteProject(getAccessToken(),path+"/"+id);
+        steps.verifyStatus(204,response);
     }
 }

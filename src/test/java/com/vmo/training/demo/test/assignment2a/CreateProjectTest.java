@@ -1,25 +1,32 @@
 package com.vmo.training.demo.test.assignment2a;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.vmo.training.demo.basetests.assignment2a.ProjectBaseTest;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import org.testng.Assert;
+import com.vmo.training.demo.microservices.steps.assignment2a.steps2a;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import static io.restassured.RestAssured.given;
 
 public class CreateProjectTest extends ProjectBaseTest {
 
+    steps2a createProjectSteps = new steps2a();
     @Test(description = "Create a new project successfully")
     public void C_01(){
-        Map<String,String> map=new HashMap<>();
-        map.put("name","C5 Project");
+        response=createProjectSteps.getProject(getAccessToken(),path);
+        List list=response.as(List.class);
+        String object = new Gson().toJson(list.get(2));
+        JsonObject jObject = new Gson().fromJson(object, JsonObject.class);
+        String id= String.valueOf(jObject.get("id"));
+        if(list.size()>7){
+            createProjectSteps.deleteProject(getAccessToken(),path+"/"+id);
+        }
+        Map<String,Object> map=new HashMap<>();
+        map.put("name","C5 Project3");
 
-        Response response=responseHandles.sendPostMethod(map,getAccessToken(),path);
-        response.prettyPrint();
-        Assert.assertEquals(response.statusCode(),200);
+        response= createProjectSteps.createNewProject(map,getAccessToken(),path);
+        createProjectSteps.createProjectSuccessfully(200,response,(String) map.get("name"));
     }
 
     @Test(description = "Create a new project without 'name' field")
@@ -28,29 +35,26 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        Response response=responseHandles.sendPostMethod(map,getAccessToken(),path);
-        response.prettyPrint();
-        Assert.assertEquals(response.statusCode(),400);
+        response= createProjectSteps.createNewProject(map,getAccessToken(),path);
+        createProjectSteps.verifyStatus(400,response);
     }
 
     @Test(description = "Create a new project with invalid accessToken")
     public void C_03(){
-        Map<String,String> map=new HashMap<>();
+        Map<String,Object> map=new HashMap<>();
         map.put("name","C5 project");
 
-        Response response=responseHandles.sendPostMethod(map,invalid_accessToken,path);
-        response.prettyPrint();
-        Assert.assertEquals(response.statusCode(),401);
+        response=createProjectSteps.createNewProject(map,invalid_accessToken,path);
+        createProjectSteps.verifyStatus(401,response);
     }
 
     @Test(description = "Create a new project without accessToken")
     public void C_04(){
-        Map<String,String> map=new HashMap<>();
+        Map<String,Object> map=new HashMap<>();
         map.put("name","C5 project");
 
-        Response response=responseHandles.sendPostMethod(map,"",path);
-        response.prettyPrint();
-        Assert.assertEquals(response.statusCode(),401);
+        response=createProjectSteps.createNewProjectWithoutAccessToken(map,path);
+        createProjectSteps.verifyStatus(401,response);
     }
 
     @Test(description = "Create a new project when getting accessToken with invalid url")
@@ -60,9 +64,8 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        Response response=responseHandles.sendPostMethod(map,getAccessTokenFail(),path);
-        response.prettyPrint();
-        Assert.assertEquals(response.statusCode(),404);
+        response=createProjectSteps.createNewProject(map,getAccessTokenFail(),path);
+        createProjectSteps.verifyStatus(404,response);
     }
     @Test(description = "Create a new project with invalid url")
     public void C_06(){
@@ -71,9 +74,8 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        Response response=responseHandles.sendPostMethod(map,getAccessToken(),path+"/abc");
-        response.prettyPrint();
-        Assert.assertEquals(response.statusCode(),404);
+        response=createProjectSteps.createNewProject(map,getAccessToken(),path+"/a/abc");
+        createProjectSteps.verifyStatus(404,response);
     }
 
     @Test(description = "Create a new project with invalid 'name' field")
@@ -83,9 +85,8 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        Response response=responseHandles.sendPostMethod(map,getAccessToken(),path);
-        response.prettyPrint();
-        Assert.assertEquals(response.statusCode(),400);
+        response=createProjectSteps.createNewProject(map,getAccessToken(),path);
+        createProjectSteps.verifyStatus(400,response);
     }
 
     @Test(description = "Create a new project with empty 'name' field")
@@ -95,9 +96,8 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        Response response=responseHandles.sendPostMethod(map,getAccessToken(),path);
-        response.prettyPrint();
-        Assert.assertEquals(response.statusCode(),400);
+        response=createProjectSteps.createNewProject(map,getAccessToken(),path);
+        createProjectSteps.verifyStatus(400,response);
     }
 
     @Test(description = "Create a new project with invalid method")
@@ -107,23 +107,26 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        Response response=given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + getAccessToken())
-                .when()
-                .body(map)
-                .delete(path);
-        response.prettyPrint();
-        Assert.assertEquals(response.statusCode(),405);
+        response=createProjectSteps.createNewProjectWithDeleteMethod(map,getAccessToken(),path);
+        createProjectSteps.verifyStatus(405,response);
     }
 
     @Test(description = "Create a new project when existed maximum projects")
     public void C_10(){
-        Map<String,String> map=new HashMap<>();
-        map.put("name","C5");
+        response=createProjectSteps.getProject(getAccessToken(),path);
+        List list=response.as(List.class);
 
-        Response response=responseHandles.sendPostMethod(map,getAccessToken(),path);
-        response.prettyPrint();
-        Assert.assertEquals(response.statusCode(),403);
+            if(list.size()<=7){
+                for(int i=0;i<7;i++) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("name", "C5");
+                    response = createProjectSteps.createNewProject(map, getAccessToken(), path);
+                }
+            }else {
+                Map<String, Object> map = new HashMap<>();
+                map.put("name", "maximum projects");
+                response = createProjectSteps.createNewProject(map, getAccessToken(), path);
+                createProjectSteps.verifyStatus(403, response);
+            }
     }
 }
