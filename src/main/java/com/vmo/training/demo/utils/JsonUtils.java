@@ -4,10 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.restassured.response.Response;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.List;
 import java.util.Map;
 
 public class JsonUtils {
@@ -90,5 +92,15 @@ public class JsonUtils {
 
     public static String convertJsonToString(Object body) {
         return new Gson().toJson(body);
+    }
+
+    public static JsonObject getJsonObject(Response response) {
+        List re = response.as(List.class);
+        JsonObject jObject=null;
+        for (int i = 0; i < re.size(); i++) {
+            String object = new Gson().toJson(re.get(i));
+            jObject = new Gson().fromJson(object, JsonObject.class);
+        }
+        return jObject;
     }
 }

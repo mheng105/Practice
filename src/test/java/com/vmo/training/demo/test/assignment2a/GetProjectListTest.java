@@ -1,7 +1,7 @@
 package com.vmo.training.demo.test.assignment2a;
 
 import com.vmo.training.demo.basetests.assignment2a.ProjectBaseTest;
-import com.vmo.training.demo.microservices.steps.assignment2a.steps2a;
+import com.vmo.training.demo.microservices.steps.assignment2a.GetAllProjectSteps;
 import org.testng.annotations.Test;
 
 
@@ -10,16 +10,16 @@ import static com.vmo.training.demo.microservices.constants.Constant.*;
 
 public class GetProjectListTest extends ProjectBaseTest {
 
-    steps2a getProjectsSteps=new steps2a();
+    GetAllProjectSteps getProjectsSteps=new GetAllProjectSteps();
     @Test(description="Get all projects successfully")
     public void getAll_01(){
-        response= getProjectsSteps.getProject(getAccessToken(),URL_PROJECT+"/");
+        response= getProjectsSteps.getProjectWithValidAccessToken(URL_PROJECT+"/");
         getProjectsSteps.verifyStatus(200,response);
     }
 
     @Test(description = "Get all projects with invalid accessToken")
     public void getAll_02(){
-        response= getProjectsSteps.getProject(invalid_accessToken, URL_PROJECT +"/");
+        response= getProjectsSteps.getProjectWithInvalidToken(URL_PROJECT +"/");
         getProjectsSteps.verifyStatus(401,response);
     }
 
@@ -31,13 +31,13 @@ public class GetProjectListTest extends ProjectBaseTest {
 
     @Test(description = "Get all projects when getting accessToken with invalid url")
     public void getAll_04(){
-        response= getProjectsSteps.getProject(getAccessTokenFail(),URL_PROJECT+"/");
+        response= getProjectsSteps.getProjectWithValidUrlToken(URL_PROJECT+"/");
         getProjectsSteps.verifyStatus(404,response);
     }
 
     @Test(description = "Get all projects with invalid url")
     public void getAll_05(){
-        response= getProjectsSteps.getProject(getAccessToken(),URL_PROJECT+"/a/abc");
+        response= getProjectsSteps.getProjectWithValidAccessToken(URL_PROJECT+"/a/abc");
         getProjectsSteps.verifyStatus(404,response);
     }
 }

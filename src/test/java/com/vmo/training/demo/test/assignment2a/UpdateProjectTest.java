@@ -3,7 +3,9 @@ package com.vmo.training.demo.test.assignment2a;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.vmo.training.demo.basetests.assignment2a.ProjectBaseTest;
-import com.vmo.training.demo.microservices.steps.assignment2a.steps2a;
+import com.vmo.training.demo.microservices.steps.assignment2a.DeleteProjectSteps;
+import com.vmo.training.demo.microservices.steps.assignment2a.GetProjectSteps;
+import com.vmo.training.demo.microservices.steps.assignment2a.UpdateProjectSteps;
 import io.qameta.allure.Step;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -13,17 +15,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.vmo.training.demo.handles.ResponseHandles.sendGetMethod;
 import static com.vmo.training.demo.microservices.constants.Constant.*;
 
 
 public class UpdateProjectTest extends ProjectBaseTest {
-    steps2a updateProjectSteps=new steps2a();
+    UpdateProjectSteps updateProjectSteps=new UpdateProjectSteps();
 
     @BeforeMethod(description = "Get all project then getting id")
     @Step("Get id in project list")
     public void getId() {
-        response = sendGetMethod(getAccessToken(), URL_PROJECT);
+        GetProjectSteps steps=new GetProjectSteps();
+        response = steps.getProjectWithValidAccessToken(URL_PROJECT);
         Assert.assertEquals(response.statusCode(), 200);
         List re = response.as(List.class);
         String object = new Gson().toJson(re.get(2));
@@ -38,7 +40,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        response=updateProjectSteps.updateProject(map,getAccessToken(),URL_PROJECT+"/"+id);
+        response=updateProjectSteps.updateProjectWithValidAccessToken(map,URL_PROJECT+"/"+id);
         updateProjectSteps.verifyStatus(204,response);
     }
 
@@ -47,7 +49,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project");
 
-        response=updateProjectSteps.updateProject(map,invalid_accessToken,URL_PROJECT+"/"+id);
+        response=updateProjectSteps.updateProjectWithInvalidToken(map,URL_PROJECT+"/"+id);
         updateProjectSteps.verifyStatus(401,response);
     }
 
@@ -56,16 +58,27 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project");
 
-        response=updateProjectSteps.updateProject(map,getAccessToken(),URL_PROJECT+"/"+invalid_id);
+        response=updateProjectSteps.updateProjectWithValidAccessToken(map,URL_PROJECT+"/"+invalid_id);
         updateProjectSteps.verifyStatus(400,response);
     }
 
     @Test(description = "Update a project with empty 'id'")
     public void U_04(){
+        GetProjectSteps getSteps=new GetProjectSteps();
+        DeleteProjectSteps deleteSteps=new DeleteProjectSteps();
+
+        response=getSteps.getProjectWithValidAccessToken(URL_PROJECT);
+        List list=response.as(List.class);
+        String object = new Gson().toJson(list.get(2));
+        JsonObject jObject = new Gson().fromJson(object, JsonObject.class);
+        String id= String.valueOf(jObject.get("id"));
+        if(list.size()>7){
+            deleteSteps.deleteProject(URL_PROJECT+"/"+id);
+        }
+        
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project");
-
-        response=updateProjectSteps.updateProject(map,getAccessToken(),URL_PROJECT+"/");
+        response=updateProjectSteps.updateProjectWithValidAccessToken(map,URL_PROJECT+"/");
         updateProjectSteps.verifyStatus(200,response);
     }
 
@@ -74,7 +87,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project");
 
-        response=updateProjectSteps.updateProject(map,getAccessTokenFail(),URL_PROJECT+"/"+id);
+        response=updateProjectSteps.updateProjectWithInvalidUrlToken(map,URL_PROJECT+"/"+id);
         updateProjectSteps.verifyStatus(404,response);
     }
 
@@ -83,7 +96,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project");
 
-        response=updateProjectSteps.updateProject(map,getAccessToken(),URL_PROJECT+"/a/abc/"+id);
+        response=updateProjectSteps.updateProjectWithValidAccessToken(map,URL_PROJECT+"/a/abc/"+id);
         updateProjectSteps.verifyStatus(404,response);
     }
 
@@ -92,7 +105,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name",123456);
 
-        response=updateProjectSteps.updateProject(map,getAccessToken(),URL_PROJECT+"/"+id);
+        response=updateProjectSteps.updateProjectWithValidAccessToken(map,URL_PROJECT+"/"+id);
         updateProjectSteps.verifyStatus(400,response);
     }
 
@@ -110,7 +123,7 @@ public class UpdateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project");
 
-        response=updateProjectSteps.updateProjectWithInvalidMethod(map,getAccessToken(),URL_PROJECT+"/"+id);
+        response=updateProjectSteps.updateProjectWithInvalidMethod(map,URL_PROJECT+"/"+id);
         updateProjectSteps.verifyStatus(405,response);
     }
 }

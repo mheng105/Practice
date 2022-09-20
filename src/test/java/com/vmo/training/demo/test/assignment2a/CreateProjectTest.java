@@ -2,7 +2,9 @@ package com.vmo.training.demo.test.assignment2a;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.vmo.training.demo.basetests.assignment2a.ProjectBaseTest;
-import com.vmo.training.demo.microservices.steps.assignment2a.steps2a;
+import com.vmo.training.demo.microservices.steps.assignment2a.CreateProjectSteps;
+import com.vmo.training.demo.microservices.steps.assignment2a.DeleteProjectSteps;
+import com.vmo.training.demo.microservices.steps.assignment2a.GetAllProjectSteps;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -13,21 +15,24 @@ import static com.vmo.training.demo.microservices.constants.Constant.*;
 
 public class CreateProjectTest extends ProjectBaseTest {
 
-    steps2a createProjectSteps = new steps2a();
+    CreateProjectSteps createProjectSteps = new CreateProjectSteps();
+    GetAllProjectSteps getAllProjectSteps=new GetAllProjectSteps();
+    DeleteProjectSteps deleteProjectSteps=new DeleteProjectSteps();
     @Test(description = "Create a new project successfully")
     public void C_01(){
-        response=createProjectSteps.getProject(getAccessToken(),URL_PROJECT);
+        response=getAllProjectSteps.getProjectWithValidAccessToken(URL_PROJECT);
         List list=response.as(List.class);
         String object = new Gson().toJson(list.get(2));
         JsonObject jObject = new Gson().fromJson(object, JsonObject.class);
         String id= String.valueOf(jObject.get("id"));
         if(list.size()>7){
-            createProjectSteps.deleteProject(getAccessToken(),URL_PROJECT+"/"+id);
+            deleteProjectSteps.deleteProject(URL_PROJECT+"/"+id);
         }
+
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project3");
 
-        response= createProjectSteps.createNewProject(map,getAccessToken(),URL_PROJECT);
+        response= createProjectSteps.createNewProjectWithValidToken(map,URL_PROJECT);
         createProjectSteps.createProjectSuccessfully(200,response,(String) map.get("name"));
     }
 
@@ -37,7 +42,7 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        response= createProjectSteps.createNewProject(map,getAccessToken(),URL_PROJECT);
+        response= createProjectSteps.createNewProjectWithValidToken(map,URL_PROJECT);
         createProjectSteps.verifyStatus(400,response);
     }
 
@@ -46,7 +51,7 @@ public class CreateProjectTest extends ProjectBaseTest {
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 project");
 
-        response=createProjectSteps.createNewProject(map,invalid_accessToken,URL_PROJECT);
+        response=createProjectSteps.createNewProjectWithInvalidToken(map,URL_PROJECT);
         createProjectSteps.verifyStatus(401,response);
     }
 
@@ -66,7 +71,7 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        response=createProjectSteps.createNewProject(map,getAccessTokenFail(),URL_PROJECT);
+        response=createProjectSteps.createNewProjectWithInvalidUrl(map,URL_PROJECT);
         createProjectSteps.verifyStatus(404,response);
     }
     @Test(description = "Create a new project with invalid url")
@@ -76,7 +81,7 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        response=createProjectSteps.createNewProject(map,getAccessToken(),URL_PROJECT+"/a/abc");
+        response=createProjectSteps.createNewProjectWithValidToken(map,URL_PROJECT+"/a/abc");
         createProjectSteps.verifyStatus(404,response);
     }
 
@@ -87,7 +92,7 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        response=createProjectSteps.createNewProject(map,getAccessToken(),URL_PROJECT);
+        response=createProjectSteps.createNewProjectWithValidToken(map,URL_PROJECT);
         createProjectSteps.verifyStatus(400,response);
     }
 
@@ -98,7 +103,7 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        response=createProjectSteps.createNewProject(map,getAccessToken(),URL_PROJECT);
+        response=createProjectSteps.createNewProjectWithValidToken(map,URL_PROJECT);
         createProjectSteps.verifyStatus(400,response);
     }
 
@@ -109,25 +114,25 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        response=createProjectSteps.createNewProjectWithInvalidMethod(map,getAccessToken(),URL_PROJECT);
+        response=createProjectSteps.createNewProjectWithInvalidMethod(map,URL_PROJECT);
         createProjectSteps.verifyStatus(405,response);
     }
 
     @Test(description = "Create a new project when existed maximum projects")
     public void C_10(){
-        response=createProjectSteps.getProject(getAccessToken(),URL_PROJECT);
+        response=getAllProjectSteps.getProjectWithValidAccessToken(URL_PROJECT);
         List list=response.as(List.class);
 
             if(list.size()<=7){
                 for(int i=0;i<7;i++) {
                     Map<String, Object> map = new HashMap<>();
                     map.put("name", "C5");
-                    response = createProjectSteps.createNewProject(map, getAccessToken(), URL_PROJECT);
+                    response = createProjectSteps.createNewProjectWithValidToken(map,URL_PROJECT);
                 }
             }else {
                 Map<String, Object> map = new HashMap<>();
                 map.put("name", "maximum projects");
-                response = createProjectSteps.createNewProject(map, getAccessToken(), URL_PROJECT);
+                response = createProjectSteps.createNewProjectWithValidToken(map, URL_PROJECT);
                 createProjectSteps.verifyStatus(403, response);
             }
     }

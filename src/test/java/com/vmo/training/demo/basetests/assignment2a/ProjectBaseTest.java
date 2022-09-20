@@ -8,10 +8,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.vmo.training.demo.handles.ResponseHandles.sendPostMethodWithoutToken;
+import static com.vmo.training.demo.utils.JsonUtils.*;
 
 
 public class ProjectBaseTest{
@@ -22,49 +22,6 @@ public class ProjectBaseTest{
     @BeforeMethod
     public void init(){
         RestAssured.baseURI="https://api.todoist.com";
-    }
-
-    public String getAccessToken(){
-        Map<String,String> map=new HashMap<>();
-        map.put("email","mheng105@gmail.com");
-        map.put("password","123456abc");
-
-        response=sendPostMethodWithoutToken(map,"/API/v8.7/user/login");
-        Assert.assertEquals(response.statusCode(),200);
-
-        Object o=response.as(Object.class);
-        String g=new Gson().toJson(o);
-        JsonObject jObject=new Gson().fromJson(g,JsonObject.class);
-        return String.valueOf(jObject.get("token"));
-    }
-
-    public JsonObject getJsonObject(Response response) {
-        List re = response.as(List.class);
-        JsonObject jObject=null;
-        for (int i = 0; i < re.size(); i++) {
-            String object = new Gson().toJson(re.get(i));
-            jObject = new Gson().fromJson(object, JsonObject.class);
-        }
-        return jObject;
-    }
-
-    public Object getId(Response response){
-        return getJsonObject(response).get("id");
-    }
-
-    public String getAccessTokenFail(){
-        Map<String,String> map=new HashMap<>();
-        map.put("email","mheng105@gmail.com");
-        map.put("password","123456abc");
-
-        response= sendPostMethodWithoutToken(map,"/abc");
-        Assert.assertEquals(response.statusCode(),"404");
-
-        Object o=response.as(Object.class);
-        String g=new Gson().toJson(o);
-        JsonObject jObject=new Gson().fromJson(g,JsonObject.class);
-        Object object=jObject.get("token");
-        return String.valueOf(object);
     }
 
 //    public String getId(){
