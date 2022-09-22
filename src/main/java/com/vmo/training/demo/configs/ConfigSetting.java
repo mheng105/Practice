@@ -10,6 +10,8 @@ public class ConfigSetting {
     private static final String URL="url";
 
     private static final String STATUS="status";
+    private static final String MAIL="email";
+    private static final String PASSWORD="password";
 
     private Properties configProperties;
     private static String PROPERTIESFILENAME="config";
@@ -39,6 +41,14 @@ public class ConfigSetting {
 
     public String getDefaultTimeout(){
         return this.configProperties.getProperty(DEFAULT_TIMEOUT);
+    }
+
+    public String getMail(){
+        return this.configProperties.getProperty(MAIL);
+    }
+
+    public String getPassword(){
+        return this.configProperties.getProperty(PASSWORD);
     }
 
     public Properties getConfigProperties(){

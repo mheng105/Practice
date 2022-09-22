@@ -1,21 +1,12 @@
 package com.vmo.training.demo.basetests.assignment2a;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.vmo.training.demo.handles.ResponseHandles.sendPostMethodWithoutToken;
-import static com.vmo.training.demo.utils.JsonUtils.*;
 
 
 public class ProjectBaseTest{
-
     protected static String id;
     protected Response response;
 

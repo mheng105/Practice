@@ -1,14 +1,9 @@
 package com.vmo.training.demo.test.assignment2a;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.vmo.training.demo.basetests.assignment2a.ProjectBaseTest;
 import com.vmo.training.demo.microservices.steps.assignment2a.CreateProjectSteps;
-import com.vmo.training.demo.microservices.steps.assignment2a.DeleteProjectSteps;
-import com.vmo.training.demo.microservices.steps.assignment2a.GetAllProjectSteps;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.vmo.training.demo.microservices.constants.Constant.*;
@@ -16,18 +11,10 @@ import static com.vmo.training.demo.microservices.constants.Constant.*;
 public class CreateProjectTest extends ProjectBaseTest {
 
     CreateProjectSteps createProjectSteps = new CreateProjectSteps();
-    GetAllProjectSteps getAllProjectSteps=new GetAllProjectSteps();
-    DeleteProjectSteps deleteProjectSteps=new DeleteProjectSteps();
+
     @Test(description = "Create a new project successfully")
     public void C_01(){
-        response=getAllProjectSteps.getProjectWithValidAccessToken(URL_PROJECT);
-        List list=response.as(List.class);
-        String object = new Gson().toJson(list.get(2));
-        JsonObject jObject = new Gson().fromJson(object, JsonObject.class);
-        String id= String.valueOf(jObject.get("id"));
-        if(list.size()>7){
-            deleteProjectSteps.deleteProject(URL_PROJECT+"/"+id);
-        }
+        createProjectSteps.deleteProjectWhenMaximumProjects();
 
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project3");
@@ -120,20 +107,8 @@ public class CreateProjectTest extends ProjectBaseTest {
 
     @Test(description = "Create a new project when existed maximum projects")
     public void C_10(){
-        response=getAllProjectSteps.getProjectWithValidAccessToken(URL_PROJECT);
-        List list=response.as(List.class);
-
-            if(list.size()<=7){
-                for(int i=0;i<7;i++) {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("name", "C5");
-                    response = createProjectSteps.createNewProjectWithValidToken(map,URL_PROJECT);
-                }
-            }else {
-                Map<String, Object> map = new HashMap<>();
-                map.put("name", "maximum projects");
-                response = createProjectSteps.createNewProjectWithValidToken(map, URL_PROJECT);
-                createProjectSteps.verifyStatus(403, response);
-            }
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", "C5");
+        createProjectSteps.validateNumberProject(map,URL_PROJECT);
     }
 }

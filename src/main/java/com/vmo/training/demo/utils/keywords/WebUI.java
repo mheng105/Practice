@@ -13,6 +13,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.http.Routable;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
@@ -243,17 +244,19 @@ public class WebUI {
     public List<WebElement> findElements(String locator) {
         WebDriver driver = driverManager.getDriver();
         logger.info(MessageFormat.format("Finding the web elements located by {0}", locator));
-        try {
-            Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(30))
-                    .pollingEvery(Duration.ofSeconds(5)).ignoring(NoSuchElementException.class);
-            List<WebElement> we = wait.until(new Function<WebDriver, List<WebElement>>() {
-                @Override
-                public List<WebElement> apply(WebDriver input) {
-                    return driver.findElements(By.xpath(locator));
-                }
-            });
+//        try {
+//            Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(30))
+//                    .pollingEvery(Duration.ofSeconds(5)).ignoring(NoSuchElementException.class);
+//            List<WebElement> we = wait.until(new Function<WebDriver, List<WebElement>>() {
+//                @Override
+//                public List<WebElement> apply(WebDriver input) {
+//                    return driver.findElements(By.xpath(locator));
+//                }
+//            });
+        try{
+        List<WebElement> we=driver.findElements(By.xpath(locator));
             if (we != null) {
-                logger.info(MessageFormat.format("Found ''{0}'' web element located by ''{1}''", we.size(), locator));
+                logger.info(MessageFormat.format("Found {0} web element located by ''{1}''", we.size(), locator));
                 return we;
             } else {
                 logger.error(MessageFormat.format("Cannot find web element located by ''{0}''", locator));
@@ -408,6 +411,19 @@ public class WebUI {
 
     }
 
+    public String getText(WebElement we) {
+        String text = null;
+        logger.info(MessageFormat.format("Getting text of web element located by ''{0}''", we));
+        try {
+            text = we.getText();
+            logger.info(
+                    MessageFormat.format("Got text of web element located by ''{0}'' successfully: ''{1}''", we, text));
+        } catch (Exception e) {
+            logger.info(MessageFormat.format(
+                    "Cannot get text of web element located by ''{0}''. Root cause is: ''{1}''", we, e.getMessage()));
+        }
+        return text;
+    }
     public String getText(String locator) {
         WebDriver driver = driverManager.getDriver();
         WebElement we = driver.findElement(By.xpath(locator));
@@ -886,8 +902,22 @@ public class WebUI {
         return false;
     }
 
+    public boolean verifyElementDisplay(String locator){
+        WebDriver driver = driverManager.getDriver();
+        WebElement we=driver.findElement(By.xpath(locator));
+        logger.info(MessageFormat.format("Verifying the element located by ''{0}''", locator));
+        if (we.isDisplayed()) {
+            logger.info(MessageFormat.format("Verified display element located by ''{0}'' successfully", locator));
+            return true;
+        }else {
+            logger.error(MessageFormat.format("Cannot verify for display element located by {0}", locator));
+        }
+        return false;
+    }
+
     public boolean waitElementVisible(String locator) {
         WebDriver driver = driverManager.getDriver();
+
         logger.info(MessageFormat.format("The visible element located by ''{0}'' is waiting", locator));
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(30))
