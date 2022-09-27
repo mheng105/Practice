@@ -4,51 +4,55 @@ import com.vmo.training.demo.basetests.assignment2a.ProjectBaseTest;
 import com.vmo.training.demo.microservices.steps.assignment2a.CreateTaskSteps;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.vmo.training.demo.microservices.constants.Constant.*;
 import static com.vmo.training.demo.utils.JsonUtils.jsonValue;
 
+@Listeners(TestListener.class)
 public class CreateTaskTest extends ProjectBaseTest {
-    CreateTaskSteps steps=new CreateTaskSteps();
+    CreateTaskSteps createTaskSteps=new CreateTaskSteps();
     static String content;
 
     @Test
     public void createTask(){
         Map<String,Object> mapProject=new HashMap<>();
         mapProject.put("name","Project");
-        steps.validateNumberProject(URL_PROJECT);
-        id=steps.createProject(mapProject,URL_PROJECT);
+        createTaskSteps.validateNumberProject(URL_PROJECT);
+        id=createTaskSteps.createProject(mapProject,URL_PROJECT);
         Map<String,Object> map=new HashMap<>();
         map.put("project_id",id);
         map.put("content","new task");
-        response =steps.createTask(map,URL_TASK);
-        steps.createTaskSuccessfully(response,200,(String) map.get("content"));
+        response =createTaskSteps.createTask(map,URL_TASK);
+        createTaskSteps.createTaskSuccessfully(response,200,(String) map.get("content"));
         id=jsonValue(response.asPrettyString(),"id");
         content=jsonValue(response.asPrettyString(),"content");
     }
 
     @BeforeTest
     public void open(){
-        steps.goToLogin();
+        createTaskSteps.goToLogin();
     }
 
     @Test
-    public void login(){
+    public void login() throws IOException {
         Map<String,Object> map=new HashMap<>();
-        steps.login().clickProject("Project")
-        .createTask()
-        .clickCheckbox("new task").clickTaskSuccessfully();
-        response= steps.reopenTask(map,URL_TASK+"/"+id+"/reopen");
-        steps.reopenSuccessfully(response,204).reopenTaskUI();
+        createTaskSteps.login().clickProject("Project").captureScreenshot("BeforeClick");
+        createTaskSteps.createTask();
+        createTaskSteps.clickCheckbox("new task").captureScreenshot("AfterClick").clickTaskSuccessfully();
+        response= createTaskSteps.reopenTask(map,URL_TASK+"/"+id+"/reopen");
+        createTaskSteps.captureScreenshot("ReopenSuccessfully");
+        createTaskSteps.reopenSuccessfully(response,204).reopenTaskUI();
     }
 
     @AfterTest
     public void close(){
-        steps.close();
+        createTaskSteps.close();
     }
 
 //    @Test

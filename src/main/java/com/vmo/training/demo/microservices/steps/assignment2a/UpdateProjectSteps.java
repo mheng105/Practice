@@ -10,15 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 import static com.vmo.training.demo.handles.ResponseHandles.*;
-import static com.vmo.training.demo.microservices.constants.Constant.URL_PROJECT;
-import static com.vmo.training.demo.microservices.constants.Constant.invalid_accessToken;
+import static com.vmo.training.demo.microservices.constants.Constant.*;
 
 
 public class UpdateProjectSteps extends BaseSteps {
 
     @Step("Update a project")
     public Response updateProjectWithValidAccessToken(Map<String,Object> map, String path){
-        return sendPostMethod(map,getAccessTokenSuccessfully(),path);
+        return sendPostMethod(map,accessToken,path);
     }
 
     @Step("Update a project with invalid accessToken")
@@ -38,7 +37,7 @@ public class UpdateProjectSteps extends BaseSteps {
 
     @Step("Update project with invalid method")
     public Response updateProjectWithInvalidMethod(Map map,String path){
-        return sendPutMethod(map,getAccessTokenSuccessfully(),path);
+        return sendPutMethod(map,accessToken,path);
     }
 
     @Step("Show pretty")
@@ -55,17 +54,17 @@ public class UpdateProjectSteps extends BaseSteps {
 
     @Step("Get id from projects")
     public String getIdProject(){
-        Response response = sendGetMethod(getAccessTokenSuccessfully(),URL_PROJECT);
+        Response response = sendGetMethod(accessToken,URL_PROJECT);
         List re = response.as(List.class);
         String object = new Gson().toJson(re.get(1));
         JsonObject jObject = new Gson().fromJson(object, JsonObject.class);
         return String.valueOf(jObject.get("id"));
     }
     public UpdateProjectSteps validateNumberProject(Map map,String path){
-        Response response=sendGetMethod(getAccessTokenSuccessfully(),path);
+        Response response=sendGetMethod(accessToken,path);
         List list=response.as(List.class);
         if(list.size()>7){
-            sendDeleteMethod(getAccessTokenSuccessfully(),path+"/"+getIdProject());
+            sendDeleteMethod(accessToken,path+"/"+getIdProject());
         }
         return this;
     }

@@ -10,14 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 import static com.vmo.training.demo.handles.ResponseHandles.*;
-import static com.vmo.training.demo.microservices.constants.Constant.URL_PROJECT;
-import static com.vmo.training.demo.microservices.constants.Constant.invalid_accessToken;
+import static com.vmo.training.demo.microservices.constants.Constant.*;
 
 public class DeleteProjectSteps extends BaseSteps {
 
     @Step("Delete a project")
     public Response deleteProject(String path){
-        return sendDeleteMethod(getAccessTokenSuccessfully(),path);
+        return sendDeleteMethod(accessToken,path);
     }
 
     @Step("Delete a project with invalid accessToken")
@@ -37,7 +36,7 @@ public class DeleteProjectSteps extends BaseSteps {
 
     @Step("Delete a project with invalid method")
     public Response deleteProjectWithInvalidMethod(Map map, String path){
-        return sendPutMethod(map,getAccessTokenSuccessfully(),path);
+        return sendPutMethod(map,accessToken,path);
     }
 
     @Step("Verify status code")
@@ -49,7 +48,7 @@ public class DeleteProjectSteps extends BaseSteps {
 
     @Step("Get all project")
     public DeleteProjectSteps getAllProject(String path){
-        Response response=sendGetMethod(getAccessTokenSuccessfully(),path);
+        Response response=sendGetMethod(accessToken,path);
         showPretty(response);
         return this;
     }

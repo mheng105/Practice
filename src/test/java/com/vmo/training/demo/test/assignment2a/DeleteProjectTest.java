@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static com.vmo.training.demo.microservices.constants.Constant.*;
 
-
+@Listeners(TestListener.class)
 public class DeleteProjectTest extends ProjectBaseTest {
     DeleteProjectSteps deleteProjectSteps=new DeleteProjectSteps();
 
@@ -71,6 +71,7 @@ public class DeleteProjectTest extends ProjectBaseTest {
     @Test(description = "Delete a project with invalid method")
     public void D_08(){
         id=deleteProjectSteps.getIdProject();
+        System.out.println(id);
         Map<String,Object> map=new HashMap<>();
         response=deleteProjectSteps.deleteProjectWithInvalidMethod(map,URL_PROJECT+"/"+id);
         deleteProjectSteps.verifyStatus(405,response);

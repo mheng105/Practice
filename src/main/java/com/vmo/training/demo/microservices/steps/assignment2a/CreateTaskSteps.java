@@ -6,15 +6,15 @@ import com.vmo.training.demo.configs.ConfigSetting;
 import com.vmo.training.demo.utils.keywords.WebUI;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import static com.vmo.training.demo.handles.ResponseHandles.*;
-import static com.vmo.training.demo.microservices.constants.Constant.URL_PROJECT;
+import static com.vmo.training.demo.microservices.constants.Constant.*;
 import static com.vmo.training.demo.utils.JsonUtils.jsonValue;
 
 public class CreateTaskSteps extends BaseSteps {
@@ -144,12 +144,13 @@ public class CreateTaskSteps extends BaseSteps {
     }
     @Step("Create a task")
     public Response createTask(Map map, String path){
-        return sendPostMethod(map,getAccessTokenSuccessfully(),path);
+        return sendPostMethod(map,accessToken,path);
     }
 
     @Step("Reopen task")
     public Response reopenTask(Map map,String path){
-        return sendPostMethod(map,getAccessTokenSuccessfully(),path);
+        action.delayInSeconds(5);
+        return sendPostMethod(map,accessToken,path);
     }
 
     @Step("Reopened task successfully")
@@ -164,6 +165,13 @@ public class CreateTaskSteps extends BaseSteps {
         return this;
     }
 
+    @Step("Screenshot is captured")
+    public CreateTaskSteps captureScreenshot(String name) throws IOException {
+        action.delayInSeconds(5);
+        action.takeScreenShot(name);
+        return this;
+    }
+
     @Step("Get id project after creating a new project")
     public String getCreatedId(Response response){
         String reString=response.asPrettyString();
@@ -172,13 +180,13 @@ public class CreateTaskSteps extends BaseSteps {
 
     @Step("Create a project then getting id")
     public String createProject(Map map,String path){
-        Response response=sendPostMethod(map,getAccessTokenSuccessfully(),path);
+        Response response=sendPostMethod(map,accessToken,path);
         return getCreatedId(response);
     }
 
     @Step("Get id from projects")
     public String getIdProject(){
-        Response response = sendGetMethod(getAccessTokenSuccessfully(),URL_PROJECT);
+        Response response = sendGetMethod(accessToken,URL_PROJECT);
         List re = response.as(List.class);
         String object = new Gson().toJson(re.get(1));
         JsonObject jObject = new Gson().fromJson(object, JsonObject.class);
@@ -207,17 +215,17 @@ public class CreateTaskSteps extends BaseSteps {
 
     @Step("Validate the number of projects")
     public CreateTaskSteps validateNumberProject(String path){
-        Response response=sendGetMethod(getAccessTokenSuccessfully(),path);
+        Response response=sendGetMethod(accessToken,path);
         List list=response.as(List.class);
         if(list.size()>7){
-            sendDeleteMethod(getAccessTokenSuccessfully(),path+"/"+getIdProject());
+            sendDeleteMethod(accessToken,path+"/"+getIdProject());
         }
         return this;
     }
 
     @Step("Verify task")
     public CreateTaskSteps verifyTaskSuccessfully(String path,String content){
-        Response response=sendGetMethod(getAccessTokenSuccessfully(),path);
+        Response response=sendGetMethod(accessToken,path);
         String reString=response.asPrettyString();
         Assert.assertEquals(jsonValue(reString,"content"),content);
         return this;

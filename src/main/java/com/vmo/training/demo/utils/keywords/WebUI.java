@@ -1,25 +1,20 @@
 package com.vmo.training.demo.utils.keywords;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.Duration;
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.http.Routable;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 import org.slf4j.Logger;
 
 import java.util.function.Function;
+
 import com.vmo.training.demo.utils.driver.DriverManager;
 import com.vmo.training.demo.utils.driver.DriverManagerFactory;
 import com.vmo.training.demo.utils.driver.DriverType;
@@ -970,6 +965,19 @@ public class WebUI {
                     locator, e.getMessage()));
         }
         return false;
+    }
+
+    public void takeScreenShot(String fileName) throws IOException{
+        WebDriver driver= driverManager.getDriver();
+        logger.info("Taking screenshot");
+        try {
+            TakesScreenshot screenshot = (TakesScreenshot) driver;
+            File fileSource = screenshot.getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(fileSource,new File("D:\\JavaProjects\\Practice\\screenshots\\"+fileName+".png"));
+            logger.info("The screenshot is captured");
+        }catch (Exception e){
+            logger.error(MessageFormat.format("Cannot take screen shot. Root cause is : ''{0}''", e.getMessage()));
+        }
     }
 
     public int convert(String value) {

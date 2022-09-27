@@ -16,14 +16,18 @@ import static com.vmo.training.demo.utils.JsonUtils.*;
 public class CreateProjectSteps extends BaseSteps {
 
     @Step("Delete project when maximum projects")
-    public CreateProjectSteps deleteProjectWhenMaximumProjects(){
-        Response response=sendGetMethod(getAccessTokenSuccessfully(),URL_PROJECT);
+    public CreateProjectSteps deleteProjectWhenMaximumProjects(Map map){
+        Response response=sendGetMethod(accessToken,URL_PROJECT);
         List list=response.as(List.class);
-        String object = new Gson().toJson(list.get(2));
-        JsonObject jObject = new Gson().fromJson(object, JsonObject.class);
-        String id= String.valueOf(jObject.get("id"));
-        if(list.size()>7){
-            sendDeleteMethod(getAccessTokenSuccessfully(),URL_PROJECT+"/"+id);
+        if(list.size()<2) {
+            sendPostMethod(map,accessToken,URL_PROJECT);
+        }else {
+            String object = new Gson().toJson(list.get(1));
+            JsonObject jObject = new Gson().fromJson(object, JsonObject.class);
+            String id = String.valueOf(jObject.get("id"));
+            if (list.size() > 7) {
+                sendDeleteMethod( accessToken,URL_PROJECT + "/" + id);
+            }
         }
         return this;
     }
@@ -35,7 +39,7 @@ public class CreateProjectSteps extends BaseSteps {
 
     @Step("Create new project with valid accessToken")
     public Response createNewProjectWithValidToken(Map<String,Object> map,String path){
-        return sendPostMethod(map,getAccessTokenSuccessfully(),path);
+        return sendPostMethod(map,accessToken,path);
     }
 
     @Step("Create new project with valid accessToken")
@@ -54,8 +58,8 @@ public class CreateProjectSteps extends BaseSteps {
     }
 
     @Step("Create a new project with invalid method")
-    public Response createNewProjectWithInvalidMethod(Map map,String path){
-        return sendDeleteMethod(getAccessTokenSuccessfully(),path);
+    public Response createNewProjectWithInvalidMethod(Map map,String accessToken,String path){
+        return sendDeleteMethod(accessToken,path);
     }
 
     @Step("A project is created successfully")
@@ -71,9 +75,7 @@ public class CreateProjectSteps extends BaseSteps {
         Response response=sendGetMethod(getAccessTokenSuccessfully(),path);
         List list=response.as(List.class);
         if(list.size()<=7){
-            for(int i=0;i<7;i++) {
                 response = createNewProjectWithValidToken(map,path);
-            }
         }else {
             response = createNewProjectWithValidToken(map, path);
             verifyStatus(403, response);

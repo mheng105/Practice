@@ -2,12 +2,13 @@ package com.vmo.training.demo.test.assignment2a;
 
 import com.vmo.training.demo.basetests.assignment2a.ProjectBaseTest;
 import com.vmo.training.demo.microservices.steps.assignment2a.GetAllProjectSteps;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 
 import static com.vmo.training.demo.microservices.constants.Constant.*;
 
-
+@Listeners(TestListener.class)
 public class GetProjectListTest extends ProjectBaseTest {
 
     GetAllProjectSteps getProjectsSteps=new GetAllProjectSteps();

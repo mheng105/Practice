@@ -1,23 +1,23 @@
 package com.vmo.training.demo.test.assignment2a;
 import com.vmo.training.demo.basetests.assignment2a.ProjectBaseTest;
 import com.vmo.training.demo.microservices.steps.assignment2a.CreateProjectSteps;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.vmo.training.demo.microservices.constants.Constant.*;
-
+ @Listeners(TestListener.class)
 public class CreateProjectTest extends ProjectBaseTest {
 
     CreateProjectSteps createProjectSteps = new CreateProjectSteps();
 
     @Test(description = "Create a new project successfully")
     public void C_01(){
-        createProjectSteps.deleteProjectWhenMaximumProjects();
-
         Map<String,Object> map=new HashMap<>();
         map.put("name","C5 Project3");
+        createProjectSteps.deleteProjectWhenMaximumProjects(map);
 
         response= createProjectSteps.createNewProjectWithValidToken(map,URL_PROJECT);
         createProjectSteps.createProjectSuccessfully(200,response,(String) map.get("name"));
@@ -101,7 +101,7 @@ public class CreateProjectTest extends ProjectBaseTest {
         map.put("color",40);
         map.put("favorite",true);
 
-        response=createProjectSteps.createNewProjectWithInvalidMethod(map,URL_PROJECT);
+        response=createProjectSteps.createNewProjectWithInvalidMethod(map,accessToken,URL_PROJECT);
         createProjectSteps.verifyStatus(405,response);
     }
 

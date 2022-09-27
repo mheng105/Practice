@@ -2,9 +2,7 @@ package com.vmo.training.demo.basetests.assignment2a;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.testng.annotations.BeforeMethod;
-
-
+import org.testng.annotations.*;
 
 public class ProjectBaseTest{
     protected static String id;

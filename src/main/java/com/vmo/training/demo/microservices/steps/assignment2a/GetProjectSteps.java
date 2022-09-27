@@ -11,15 +11,12 @@ import java.util.Map;
 
 import static com.vmo.training.demo.handles.ResponseHandles.*;
 import static com.vmo.training.demo.handles.ResponseHandles.sendPatchMethod;
-import static com.vmo.training.demo.microservices.constants.Constant.URL_PROJECT;
-import static com.vmo.training.demo.microservices.constants.Constant.invalid_accessToken;
-import static com.vmo.training.demo.utils.JsonUtils.jsonValue;
-
+import static com.vmo.training.demo.microservices.constants.Constant.*;
 public class GetProjectSteps extends BaseSteps {
 
     @Step("Get a project")
     public Response getProjectWithValidAccessToken(String path){
-        return sendGetMethod(getAccessTokenSuccessfully(),path);
+        return sendGetMethod(accessToken,path);
     }
 
     @Step("Get a project when getting accessToken with invalid url")
@@ -38,7 +35,7 @@ public class GetProjectSteps extends BaseSteps {
 
     @Step("Get a project with invalid method")
     public Response getProjectWithInvalidMethod(Map map,String path){
-        return sendPatchMethod(map,getAccessTokenSuccessfully(),path);
+        return sendPatchMethod(map,accessToken,path);
     }
 
     @Step("Verify status code")
@@ -55,7 +52,7 @@ public class GetProjectSteps extends BaseSteps {
 
     @Step("Get id from projects")
     public String getIdProject(){
-        Response response = sendGetMethod(getAccessTokenSuccessfully(),URL_PROJECT);
+        Response response = sendGetMethod(accessToken,URL_PROJECT);
         List re = response.as(List.class);
         String object = new Gson().toJson(re.get(1));
         JsonObject jObject = new Gson().fromJson(object, JsonObject.class);
