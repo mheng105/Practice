@@ -8,6 +8,7 @@ NOTE: Before running my project, please set up something as below:
 4. Reporting: Allure Report Selenium
 
 Basic Assignment
+
 Assignment 1: WEB AUTOMATION
 
 A. Assignment 1A: 
