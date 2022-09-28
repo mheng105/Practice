@@ -9,6 +9,7 @@ NOTE: Before running my project, please set up something as below:
 
 Basic Assignment
 Assignment 1: WEB AUTOMATION
+
 A. Assignment 1A: 
 1. Go to Bursa Malaysia website https://www.bursamalaysia.com/
 2. Get the daily top 10 counter based on volume (Most Active).  
@@ -23,6 +24,7 @@ B. Assignment 1B:
 6. Display the result in descending order of price. The output should consist of the following info:Product Name, link to product, Price.
 
 Assignment 2:
+
 A. Assignment 2A: API AUTOMATION (MANUAL+AUTO)
 1. Go to this web app: https://todoist.com/. 
 2. Create an account, get access tokens.
