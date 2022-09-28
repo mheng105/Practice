@@ -1,4 +1,4 @@
-package com.vmo.training.demo.test.assignment2a;
+package com.vmo.training.demo.utils;
 
 import com.vmo.training.demo.utils.keywords.WebUI;
 import org.testng.ITestContext;
@@ -25,7 +25,6 @@ public class TestListener implements ITestListener {
         }catch (Exception e){
             System.out.println("Exception while taking screenshot: "+e.getMessage());
         }
-
     }
 
     @Override
