@@ -11,6 +11,7 @@ public class ChromeDriverManager extends DriverManager {
 	public void createDriver() {
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions chromeOptions=new ChromeOptions();
+		chromeOptions.addArguments("lang=en-US");
 //		chromeOptions.setHeadless(true);
 		driver = new ChromeDriver(chromeOptions);
 	}

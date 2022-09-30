@@ -980,12 +980,11 @@ public class WebUI {
         }
     }
 
-    public int convert(String value) {
-        int p = 0;
+    public float convert(String value) {
         if (!value.equals("")) {
-            return p = Integer.parseInt(value);
+            return Float.parseFloat(value);
         } else {
-            return p;
+            return 0;
         }
 
     }

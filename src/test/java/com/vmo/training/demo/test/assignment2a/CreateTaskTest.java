@@ -23,7 +23,7 @@ public class CreateTaskTest extends ProjectBaseTest {
     @Test
     public void createTask(){
         Map<String,Object> mapProject=new HashMap<>();
-        mapProject.put("name","Project");
+        mapProject.put("name",nameProject);
         createTaskSteps.validateNumberProject(URL_PROJECT);
         id=createTaskSteps.createProject(mapProject,URL_PROJECT);
         Map<String,Object> map=new HashMap<>();
@@ -43,7 +43,7 @@ public class CreateTaskTest extends ProjectBaseTest {
     @Test
     public void login() throws IOException {
         Map<String,Object> map=new HashMap<>();
-        createTaskSteps.login().clickProject("Project").captureScreenshot("BeforeClick");
+        createTaskSteps.login().clickProject(nameProject).captureScreenshot("BeforeClick");
         createTaskSteps.createTask();
         createTaskSteps.clickCheckbox("new task").captureScreenshot("AfterClick").clickTaskSuccessfully();
         response= createTaskSteps.reopenTask(map,URL_TASK+"/"+id+"/reopen");

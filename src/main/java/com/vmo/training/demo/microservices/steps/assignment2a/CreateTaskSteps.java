@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -21,12 +22,15 @@ public class CreateTaskSteps extends BaseSteps {
     ConfigSetting config=new ConfigSetting(System.getProperty("user.dir"));
     String email=config.getMail();
     String password=config.getPassword();
+
+
     WebUI action=new WebUI();
     final String GROUP_LI_LIST="//ul[@id='projects_list']/li/div/div/a";
     final String GROUP_SPAN_NAME_PROJECT="//ul[@id='projects_list']/li/div/div/a/span[2]";
     final String GROUP_DIV_NAME_TASK="//div[@class='list_holder']/ul/li/div/div[@class='task_list_item__content']//div[@class='markdown_content task_content']";
     final String GROUP_BUTTON_TASK="//div[@class='list_holder']/ul/li/div/button";
     final String DIV_NAME_TASK="//div['markdown_content task_content']";
+
 
     @Step("Go to login page")
     public CreateTaskSteps goToLogin(){
@@ -111,7 +115,7 @@ public class CreateTaskSteps extends BaseSteps {
                     System.out.println("Clicking the task");
                     cbList.get(i).click();
                     System.out.println("Clicked the task successfully");
-                    action.delayInSeconds(3);
+                    action.delayInSeconds(5);
                 }
             }
         }
@@ -139,6 +143,7 @@ public class CreateTaskSteps extends BaseSteps {
 
     @Step("Close browser")
     public CreateTaskSteps close(){
+        action.delayInSeconds(3);
         action.close("Chrome");
         return this;
     }
@@ -149,7 +154,6 @@ public class CreateTaskSteps extends BaseSteps {
 
     @Step("Reopen task")
     public Response reopenTask(Map map,String path){
-        action.delayInSeconds(5);
         return sendPostMethod(map,accessToken,path);
     }
 

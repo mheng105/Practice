@@ -8,6 +8,7 @@ import java.util.List;
 import com.vmo.training.demo.utils.keywords.WebUI;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.http.Routable;
 
 public class EcommercePage extends WebUI {
 	List<Product> products = new ArrayList<Product>();
@@ -28,21 +29,35 @@ public class EcommercePage extends WebUI {
 		for (int i = 0; i < list.size(); i++) {
 			Product product = new Product();
 			product.nameProduct = nameProducts.get(i).getText().trim();
-			if (!prices.get(i).getText().trim().toUpperCase().contains("to".toUpperCase())) {
-				product.price = prices.get(i).getText().trim().replace("\n", ".");
-
-			} else {
-				product.price = prices.get(i).getText().trim().replace("\n", ".").split("to")[0];
+			String price=prices.get(i).getText().trim();
+			if(price.contains("$") || price.contains("VND")){
+				if (!price.toUpperCase().contains("to".toUpperCase())) {
+					product.price = convertMoney(price.replace("\n", "."));
+				} else {
+					product.price = convertMoney(price.replace("\n", ".").split("to")[0]);
+				}
+			}else{
+				price="0";
+				product.price = price;
 			}
+
 			product.nameWebsite = nameWebsite;
 			product.link=link;
 			products.add(product);
+		}
+	}
 
+	public String convertMoney(String price){
+		if(price.contains("VND")){
+			String p="$"+convert(replace(price))/23000;
+			return p;
+		}else {
+			return price;
 		}
 	}
 
 	public String replace(String price) {
-		return price.replace("$", "").replace(",", "").replace(".", "").replace("VND", "").trim();
+		return price.replace("$", "").replace(",", "").replace("VND", "").trim();
 	}
 
 
@@ -50,15 +65,7 @@ public class EcommercePage extends WebUI {
 		Collections.sort(products, new Comparator<Product>() {
 			@Override
 			public int compare(Product product1, Product product2) {
-				if (convert(replace(product1.price)) < convert(replace(product2.price))) {
-					return 1;
-				} else {
-					if (convert(replace(product1.price)) == convert(replace(product2.price))) {
-						return 0;
-					} else {
-						return -1;
-					}
-				}
+				return Float.compare(convert(replace(product2.price)), convert(replace(product1.price)));
 			}
 
 		});

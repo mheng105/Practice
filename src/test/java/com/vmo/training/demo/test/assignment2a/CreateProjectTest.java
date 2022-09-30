@@ -17,7 +17,7 @@ public class CreateProjectTest extends ProjectBaseTest {
     @Test(description = "Create a new project successfully")
     public void C_01(){
         Map<String,Object> map=new HashMap<>();
-        map.put("name","C5 Project3");
+        map.put("name",nameProject);
         createProjectSteps.deleteProjectWhenMaximumProjects(map);
 
         response= createProjectSteps.createNewProjectWithValidToken(map,URL_PROJECT);

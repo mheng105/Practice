@@ -14,22 +14,22 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        System.out.println("Testcase is successful: "+result.getName());
+        System.out.println("\nTestcase is successful: "+result.getName());
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        System.out.println("Testcase is fail:"+result.getName());
+        System.out.println("\nTestcase is fail: "+result.getName());
         try{
             action.takeScreenShot(result.getName());
         }catch (Exception e){
-            System.out.println("Exception while taking screenshot: "+e.getMessage());
+            System.out.println("\nException while taking screenshot: "+e.getMessage());
         }
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        System.out.println("Testcase is skipped: "+result.getName());
+        System.out.println("\nTestcase is skipped: "+result.getName());
     }
 
     @Override
