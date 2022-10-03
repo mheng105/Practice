@@ -1,7 +1,7 @@
 package com.vmo.training.demo.models.assignment2a;
 
 public class Account {
-    String email,password;
+    private String email,password;
 
     public String getEmail() {
         return email;

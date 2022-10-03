@@ -1,12 +1,19 @@
 package com.vmo.training.demo.utils;
 
 import com.vmo.training.demo.utils.keywords.WebUI;
+import com.vmo.training.demo.utils.log.LogHelper;
+import io.qameta.allure.Allure;
+import org.slf4j.Logger;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import java.io.ByteArrayInputStream;
+
 public class TestListener implements ITestListener {
-    WebUI action=new WebUI();
+    WebUI action = new WebUI();
+    private static final Logger logger = LogHelper.getLogger();
+
     @Override
     public void onTestStart(ITestResult result) {
 
@@ -14,22 +21,24 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        System.out.println("\nTestcase is successful: "+result.getName());
+        logger.info("\nTestcase is successful: " + result.getName());
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        System.out.println("\nTestcase is fail: "+result.getName());
-        try{
+        logger.info("\nTestcase is fail: " + result.getName());
+        try {
             action.takeScreenShot(result.getName());
-        }catch (Exception e){
-            System.out.println("\nException while taking screenshot: "+e.getMessage());
+            action.attachScreenshotToReport();
+//            Allure.addAttachment(,new ByteArrayInputStream(action.takeScreenShot()));
+        } catch (Exception e) {
+            logger.error("\nException while taking screenshot: " + e.getMessage());
         }
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        System.out.println("\nTestcase is skipped: "+result.getName());
+        logger.info("\nTestcase is skipped: " + result.getName());
     }
 
     @Override

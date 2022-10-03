@@ -96,7 +96,7 @@ public class JsonUtils {
 
     public static JsonObject getJsonObject(Response response) {
         List re = response.as(List.class);
-        JsonObject jObject=null;
+        JsonObject jObject = null;
         for (int i = 0; i < re.size(); i++) {
             String object = new Gson().toJson(re.get(i));
             jObject = new Gson().fromJson(object, JsonObject.class);

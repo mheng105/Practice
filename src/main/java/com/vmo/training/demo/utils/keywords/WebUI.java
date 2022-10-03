@@ -6,11 +6,10 @@ import java.text.MessageFormat;
 import java.time.Duration;
 import java.util.List;
 
+import io.qameta.allure.Attachment;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.*;
 import org.slf4j.Logger;
 
 import java.util.function.Function;
@@ -248,8 +247,8 @@ public class WebUI {
 //                    return driver.findElements(By.xpath(locator));
 //                }
 //            });
-        try{
-        List<WebElement> we=driver.findElements(By.xpath(locator));
+        try {
+            List<WebElement> we = driver.findElements(By.xpath(locator));
             if (we != null) {
                 logger.info(MessageFormat.format("Found {0} web element located by ''{1}''", we.size(), locator));
                 return we;
@@ -395,7 +394,7 @@ public class WebUI {
     public void getTagName(String locator) {
         WebDriver driver = driverManager.getDriver();
         WebElement we = driver.findElement(By.xpath(locator));
-        logger.info("Getting the tagname");
+        logger.info("Getting the tag name");
         try {
             we.getTagName();
             logger.info(MessageFormat.format("Got tag name ''{0}'' of the element located by {1} successfully",
@@ -419,6 +418,7 @@ public class WebUI {
         }
         return text;
     }
+
     public String getText(String locator) {
         WebDriver driver = driverManager.getDriver();
         WebElement we = driver.findElement(By.xpath(locator));
@@ -499,12 +499,12 @@ public class WebUI {
 
     public void navigateToUrl(String url) {
         WebDriver driver = driverManager.getDriver();
-        logger.info(MessageFormat.format("Navigating to {0}", url));
+        logger.info(MessageFormat.format("Navigating to ''{0}''", url));
         try {
             driver.navigate().to(url);
-            logger.info(MessageFormat.format("Navigated to {0} successfully", url));
+            logger.info(MessageFormat.format("Navigated to ''{0}'' successfully", url));
         } catch (Exception e) {
-            logger.error(MessageFormat.format("Cannot navigate to {0}. Root cause: {1}", url, e.getMessage()));
+            logger.error(MessageFormat.format("Cannot navigate to ''{0}''. Root cause: {1}", url, e.getMessage()));
         }
 
     }
@@ -555,17 +555,17 @@ public class WebUI {
             logger.error(MessageFormat.format("Cannot launch {0} browser. Root cause: {1} ", browser, e.getMessage()));
         }
 
-        String rawUrl=url.length >0 ? url[0]:"";
+        String rawUrl = url.length > 0 ? url[0] : "";
 
         try {
-            if(rawUrl !=null && !rawUrl.isEmpty()) {
+            if (rawUrl != null && !rawUrl.isEmpty()) {
                 WebDriver driver = driverManager.getDriver();
                 logger.info(MessageFormat.format("Navigating to ''{0}''", rawUrl));
                 driver.get(rawUrl);
             }
             logger.info(MessageFormat.format("Navigated to ''{0}'' successfully", rawUrl));
         } catch (Exception e) {
-            logger.error(MessageFormat.format("Cannot navigate to {0}. Root cause: {1}", rawUrl, e.getMessage()));
+            logger.error(MessageFormat.format("Cannot navigate to ''{0}''. Root cause: {1}", rawUrl, e.getMessage()));
         }
     }
 
@@ -576,7 +576,7 @@ public class WebUI {
             driverManager.getDriver();
             logger.info(MessageFormat.format("Launched ''{0}'' browser successfully", browser));
         } catch (Exception e) {
-            logger.error(MessageFormat.format("Cannot launch {0} browser. Root cause: {1} ", browser, e.getMessage()));
+            logger.error(MessageFormat.format("Cannot launch ''{0}'' browser. Root cause: {1} ", browser, e.getMessage()));
         }
         logger.info(MessageFormat.format("Navigating to ''{0}''", url));
         try {
@@ -584,7 +584,7 @@ public class WebUI {
             driver.get(url);
             logger.info(MessageFormat.format("Navigated to ''{0}'' successfully", url));
         } catch (Exception e) {
-            logger.error(MessageFormat.format("Cannot navigate to {0}. Root cause: {1}", url, e.getMessage()));
+            logger.error(MessageFormat.format("Cannot navigate to ''{0}''. Root cause: {1}", url, e.getMessage()));
         }
     }
 
@@ -611,7 +611,7 @@ public class WebUI {
 
     public void selectByValue(String locator, String value) {
         WebElement we = findWebElement(locator);
-        logger.info(MessageFormat.format("Selecting by value ''{0}' for the element located by ''{1}''", value,locator));
+        logger.info(MessageFormat.format("Selecting by value ''{0}' for the element located by ''{1}''", value, locator));
         try {
             Select se = new Select(we);
             if (se.isMultiple()) {
@@ -649,7 +649,7 @@ public class WebUI {
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format(
-                    "Cannot select the element located by ''{0}'' by text {1}. Root cause: {2}", locator, text,e.getMessage()));
+                    "Cannot select the element located by ''{0}'' by text {1}. Root cause: {2}", locator, text, e.getMessage()));
         }
     }
 
@@ -700,7 +700,7 @@ public class WebUI {
             WebDriver driver = driverManager.getDriver();
             JavascriptExecutor js = (JavascriptExecutor) driver;
             logger.info(MessageFormat.format("Setting text to the element located by {0}", locator));
-            js.executeScript("arguments[0].value='"+value+"'", element);
+            js.executeScript("arguments[0].value='" + value + "'", element);
             logger.info(MessageFormat.format("Set text to the element located by {0} successfully", locator));
         } catch (Exception e) {
             logger.error(MessageFormat.format("Cannot set text to the element located by {0}. Root cause: {1}", locator,
@@ -770,7 +770,7 @@ public class WebUI {
                 // sendKey(locator,value);
             }
         } catch (Exception e) {
-            logger.error(MessageFormat.format("Cannot verify the clickable element located by {0}. Root cause: {1}", locator,e.getMessage()));
+            logger.error(MessageFormat.format("Cannot verify the clickable element located by {0}. Root cause: {1}", locator, e.getMessage()));
             return false;
         }
         return false;
@@ -784,7 +784,7 @@ public class WebUI {
                 return true;
             }
         } catch (Exception e) {
-            logger.error(MessageFormat.format("Cannot verify the clickable of the web element located by {0}. Root cause: {1}", locator,e.getMessage()));
+            logger.error(MessageFormat.format("Cannot verify the clickable of the web element located by {0}. Root cause: {1}", locator, e.getMessage()));
             return false;
         }
         return false;
@@ -860,7 +860,7 @@ public class WebUI {
             if (we != null) {
                 logger.info(MessageFormat.format("Waited for present element located by ''{0}'' successfully", locator));
                 return true;
-            }else {
+            } else {
                 logger.error(MessageFormat.format("Cannot wait for present element located by {0}", locator));
                 return false;
             }
@@ -886,7 +886,7 @@ public class WebUI {
             if (we == null) {
                 logger.info(MessageFormat.format("Waited for not present element located by ''{0}'' successfully", locator));
                 return true;
-            }else {
+            } else {
                 logger.error(MessageFormat.format("Cannot wait for not present element located by {0}", locator));
                 return false;
             }
@@ -897,14 +897,14 @@ public class WebUI {
         return false;
     }
 
-    public boolean verifyElementDisplay(String locator){
+    public boolean verifyElementDisplay(String locator) {
         WebDriver driver = driverManager.getDriver();
-        WebElement we=driver.findElement(By.xpath(locator));
+        WebElement we = driver.findElement(By.xpath(locator));
         logger.info(MessageFormat.format("Verifying the element located by ''{0}''", locator));
         if (we.isDisplayed()) {
             logger.info(MessageFormat.format("Verified display element located by ''{0}'' successfully", locator));
             return true;
-        }else {
+        } else {
             logger.error(MessageFormat.format("Cannot verify for display element located by {0}", locator));
         }
         return false;
@@ -917,7 +917,7 @@ public class WebUI {
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(30))
                     .pollingEvery(Duration.ofSeconds(5)).ignoring(NoSuchElementException.class);
-            WebElement we=wait.until(new Function<WebDriver, WebElement>() {
+            WebElement we = wait.until(new Function<WebDriver, WebElement>() {
                 @Override
                 public WebElement apply(WebDriver webDriver) {
                     return driver.findElement(By.xpath(locator));
@@ -929,7 +929,7 @@ public class WebUI {
             if (we.isDisplayed()) {
                 logger.info(MessageFormat.format("Waited for visible element located by ''{0}'' successfully", locator));
                 return true;
-            }else {
+            } else {
                 logger.error(MessageFormat.format("Cannot wait for visible element located by {0}", locator));
                 return false;
             }
@@ -956,7 +956,7 @@ public class WebUI {
             if (!we.isDisplayed()) {
                 logger.info(MessageFormat.format("Waited for not visible element located by ''{0}'' successfully", locator));
                 return true;
-            }else {
+            } else {
                 logger.error(MessageFormat.format("Cannot wait for not visible element located by {0}", locator));
                 return false;
             }
@@ -967,17 +967,39 @@ public class WebUI {
         return false;
     }
 
-    public void takeScreenShot(String fileName) throws IOException{
-        WebDriver driver= driverManager.getDriver();
+    public void takeScreenShot(String fileName) throws IOException {
+        WebDriver driver = driverManager.getDriver();
         logger.info("Taking screenshot");
         try {
             TakesScreenshot screenshot = (TakesScreenshot) driver;
             File fileSource = screenshot.getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(fileSource,new File("D:\\JavaProjects\\Practice\\screenshots\\"+fileName+".png"));
+            FileUtils.copyFile(fileSource, new File("D:\\JavaProjects\\Practice\\screenshots\\" + fileName + ".png"));
             logger.info("The screenshot is captured");
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(MessageFormat.format("Cannot take screen shot. Root cause is : ''{0}''", e.getMessage()));
         }
+    }
+
+    @Attachment(value = "Form Screenshot", type = "image/png")
+    public byte[] attachScreenshotToReport() {
+        logger.info("Taking screenshot on browser");
+        try {
+            WebDriver driver = driverManager.getDriver();
+            return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("Cannot take screenshot. Root cause is : ''{0}''", e.getMessage()));
+        }
+        return new byte[0];
+    }
+
+    public void waitElementIsPresent(By by, int time) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driverManager.getDriver(), Duration.ofSeconds(time));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+        } catch (Exception e) {
+            logger.error("Time out " + time + " for wait element " + String.valueOf(by) + " present");
+        }
+
     }
 
     public float convert(String value) {

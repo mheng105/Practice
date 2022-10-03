@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.vmo.training.demo.models.assignment1.Counter;
 import com.vmo.training.demo.utils.keywords.WebUI;
 import org.openqa.selenium.WebElement;
 
@@ -100,7 +101,6 @@ public class BursaMalaysiaPage extends WebUI {
         }
 
         Collections.reverse(newList);
-
     }
 
     public void showCounters() {

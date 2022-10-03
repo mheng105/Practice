@@ -1,35 +1,37 @@
 package com.vmo.training.demo.test.assignment1;
 
 import com.vmo.training.demo.basetests.assignment1.BaseTest;
-import com.vmo.training.demo.microservices.steps.assignment1.BursamalaysiaSteps;
-import com.vmo.training.demo.utils.TestListener;
+import com.vmo.training.demo.microservices.steps.assignment1.BursaMalaysiaSteps;
 import com.vmo.training.demo.utils.keywords.WebUI;
-import jdk.jfr.Description;
-import org.testng.annotations.Listeners;
+import io.qameta.allure.Description;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
-@Listeners(TestListener.class)
-public class BursamalaysiaTest extends BaseTest {
-	protected BursamalaysiaSteps obj;
-	protected static String url;
-	protected static String status;
+public class BursaMalaysiaTest extends BaseTest {
+    private BursaMalaysiaSteps obj;
+    private String url;
 
-	public BursamalaysiaTest() {
-		super();
-		url=configSetting.getUrl();
-		status=configSetting.getStatus();
-	}
+    public BursaMalaysiaTest() {
+        super();
+        url = configSetting.getUrl();
+    }
 
-	public BursamalaysiaTest(WebUI action) {
-		super(action);
-	}
+    @Test(description = "Bursa Malaysia Test")
+    @Description("Bursa Malaysia Test")
+    public void test() {
+        obj = new BursaMalaysiaSteps();
+        obj.goTo(url);
+        Assert.assertTrue(false);
+        obj.getCounters();
+        obj.showList();
+    }
 
-	@Test(description = "Bursamalaysia Test")
-	@Description("Bursamalaysia Test")
-	public void test() {
-		obj=new BursamalaysiaSteps();
-		obj.goTo(url);
-		obj.getCounters(status);
-		obj.showList();
-	}
+    @Test
+    public void sida() {
+        WebUI action = new WebUI();
+        obj = new BursaMalaysiaSteps();
+
+        obj.goTo("https://www.google.com/");
+        Assert.assertEquals(action.getTitle(), "ggg");
+    }
 }

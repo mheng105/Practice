@@ -10,46 +10,49 @@
         <selenium.java.version>4.1.1</selenium.java.version>
         <slf4j.version>1.7.25</slf4j.version>
         <testng.version>7.6.1</testng.version>
-        <allure-testng-version>2.13.9</allure-testng-version>
+        <allure-testng-version>2.18.1</allure-testng-version>
         <aspectj.version>1.9.7</aspectj.version>
         <rest-assured.version>4.4.0</rest-assured.version>
+        <webdrivermanager.version>5.2.0</webdrivermanager.version>
+        <jackson.version>2.13.3</jackson.version>
+        <gson.version>2.9.0</gson.version>
+        <allure.writer.version>1.0.0</allure.writer.version>
+        <allure.maven.version>2.10.0</allure.maven.version>
+        <allure.report.version>2.10.0</allure.report.version>
+        <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
     </properties>
     <groupId>org.example</groupId>
     <artifactId>Practice</artifactId>
     <version>1.0-SNAPSHOT</version>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>${testng.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.java.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.2.0</version>
+            <version>${webdrivermanager.version}</version>
         </dependency>
 
         <dependency>
@@ -69,30 +72,34 @@
             <artifactId>rest-assured</artifactId>
             <version>${rest-assured.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.3</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.9.0</version>
+            <version>${gson.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.github.automatedowl/allure-environment-writer -->
+<!--        <dependency>-->
+<!--            <groupId>com.github.automatedowl</groupId>-->
+<!--            <artifactId>allure-environment-writer</artifactId>-->
+<!--            <version>${allure.writer.version}</version>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>com.github.automatedowl</groupId>
-            <artifactId>allure-environment-writer</artifactId>
-            <version>1.0.0</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
         </dependency>
+
     </dependencies>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.20</version>
+                <version>${maven.surefire.plugin.version}</version>
                 <configuration>
                     <suiteXmlFiles>
                         <suiteXmlFile>TestNG.xml</suiteXmlFile>
@@ -102,14 +109,14 @@
                     </argLine>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>io.qameta.allure</groupId>
-                <artifactId>allure-maven</artifactId>
-                <version>2.10.0</version>
-                <configuration>
-                    <reportVersion>2.4.1</reportVersion>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>io.qameta.allure</groupId>-->
+<!--                <artifactId>allure-maven</artifactId>-->
+<!--                <version>${allure.maven.version}</version>-->
+<!--                <configuration>-->
+<!--                    <reportVersion>${allure.report.version}</reportVersion>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>

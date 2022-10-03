@@ -5,10 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.vmo.training.demo.models.assignment1.Product;
 import com.vmo.training.demo.utils.keywords.WebUI;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.http.Routable;
 
 public class EcommercePage extends WebUI {
     List<Product> products = new ArrayList<Product>();

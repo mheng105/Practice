@@ -1,16 +1,18 @@
 package com.vmo.training.demo.basetests.assignment2a;
 
+import com.vmo.training.demo.utils.TestListener;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.testng.annotations.*;
 
-public class ProjectBaseTest{
+@Listeners(TestListener.class)
+public class ProjectBaseTest {
     protected static String id;
     protected Response response;
 
     @BeforeMethod
-    public void init(){
-        RestAssured.baseURI="https://api.todoist.com";
+    public void init() {
+        RestAssured.baseURI = "https://api.todoist.com";
     }
 
 //    public String getId(){

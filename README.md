@@ -2,7 +2,7 @@
 WEB AUTOMATION TEST WITH JAVA
 
 NOTE: Before running my project, please set up something as below:
-1. Tools: Using Intellji IDEA Community. Download: https://www.jetbrains.com/idea/download/#section=windows
+1. Tools: Using Intellij IDEA Community. Download: https://www.jetbrains.com/idea/download/#section=windows
 2. Programming language: Using Java with JDK 11.0.15
 3. Libraries and frameworks: Maven, Selenium, TestNG
 4. Reporting: Allure Report Selenium

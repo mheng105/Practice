@@ -13,47 +13,47 @@ import static com.vmo.training.demo.utils.JsonUtils.getJsonObject;
 import static com.vmo.training.demo.utils.JsonUtils.jsonValue;
 
 public class BaseSteps {
-   ConfigSetting config=new ConfigSetting(System.getProperty("user.dir"));
-   String email=config.getMail();
-   String password=config.getPassword();
+    ConfigSetting config = new ConfigSetting(System.getProperty("user.dir"));
+    String email = config.getMail();
+    String password = config.getPassword();
 
     @Step("Get accessToken successfully")
-    public String getAccessTokenSuccessfully(){
-        Map<String,String> map=new HashMap<>();
-        map.put("email",email);
-        map.put("password",password);
+    public String getAccessTokenSuccessfully() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
+        map.put("password", password);
 
-        Response response=sendPostMethodWithoutToken(map,"/API/v8.7/user/login");
-        Assert.assertEquals(response.statusCode(),200);
+        Response response = sendPostMethodWithoutToken(map, "/API/v8.7/user/login");
+        Assert.assertEquals(response.statusCode(), 200);
 
 //        Object o=response.as(Object.class);
 //        String g=new Gson().toJson(o);
 //        JsonObject jObject=new Gson().fromJson(g,JsonObject.class);
 //        return String.valueOf(jObject.get("token"));
-        String reString=response.asPrettyString();
-        return jsonValue(reString,"token");
+        String reString = response.asPrettyString();
+        return jsonValue(reString, "token");
     }
 
     @Step("Get accessToken unsuccessfully")
-    public String getAccessTokenFail(){
-        Map<String,String> map=new HashMap<>();
-        map.put("email",email);
-        map.put("password",password);
+    public String getAccessTokenFail() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
+        map.put("password", password);
 
-        Response response= sendPostMethodWithoutToken(map,"/abc");
-        Assert.assertEquals(response.statusCode(),404);
+        Response response = sendPostMethodWithoutToken(map, "/abc");
+        Assert.assertEquals(response.statusCode(), 404);
 
 //        Object o=response.as(Object.class);
 //        String g=new Gson().toJson(o);
 //        JsonObject jObject=new Gson().fromJson(g,JsonObject.class);
 //        Object object=jObject.get("token");
 //        return String.valueOf(object);
-        String reString=response.asPrettyString();
-        return jsonValue(reString,"token");
+        String reString = response.asPrettyString();
+        return jsonValue(reString, "token");
     }
 
     @Step("Get id")
-    public Object getId(Response response){
+    public Object getId(Response response) {
         return getJsonObject(response).get("id");
     }
 }
